@@ -76,14 +76,6 @@ header::before {
     position: relative;
     z-index: 1;
     animation: fadeInUp 0.8s ease-out;
-    /* 시각적 대비 향상을 위한 글래스 카드 효과 */
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 28px 24px 32px;
-    display: inline-block;
 }
 
 .greeting {
@@ -91,12 +83,8 @@ header::before {
     margin-bottom: 20px;
     font-weight: 700;
     letter-spacing: -0.015em;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    /* 텍스트 그라디언트 효과 */
-    background: linear-gradient(90deg, #ffffff 0%, #d6ffe6 40%, #ffffff 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: #ffffff;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .greeting::after {
@@ -437,6 +425,70 @@ svg.icon-note {
     font-size: 0.95rem;
 }
 
+/* 필터 컨테이너 */
+.filter-container {
+    max-width: 800px;
+    margin: 30px auto 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.filter-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 1rem;
+}
+
+.filter-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--primary-color);
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.filter-btn {
+    padding: 10px 24px;
+    border: 2px solid #e0e0e0;
+    background-color: var(--bg-white);
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #666;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.filter-btn:hover {
+    border-color: var(--secondary-color);
+    color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(45, 134, 89, 0.15);
+}
+
+.filter-btn.active {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 4px 12px rgba(45, 134, 89, 0.3);
+}
+
+.filter-btn.active:hover {
+    transform: translateY(-2px) scale(1.05);
+}
+
 /* 식물 카드 그리드 */
 .plants-grid {
     display: grid;
@@ -506,17 +558,51 @@ svg.icon-note {
     margin-bottom: 8px;
 }
 
-.plant-species {
+.plant-description {
     font-size: 0.9rem;
     color: #666;
     margin-bottom: 12px;
-    font-style: italic;
+    line-height: 1.5;
 }
 
 .plant-price {
     font-size: 1.4rem;
     font-weight: 700;
     color: var(--primary-color);
+}
+
+/* 식물 태그 */
+.plant-tags {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    z-index: 5;
+}
+
+.plant-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--primary-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.plant-tag:nth-child(1) {
+    background: linear-gradient(135deg, #FF6B9D 0%, #FFA06B 100%);
+    color: white;
+}
+
+.plant-tag:nth-child(2) {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
 }
 
 .plant-price-label {
@@ -833,6 +919,21 @@ footer p {
         font-size: 0.95rem;
     }
     
+    .filter-container {
+        margin: 25px auto 30px;
+        gap: 12px;
+    }
+    
+    .filter-label {
+        font-size: 0.9rem;
+        justify-content: center;
+    }
+    
+    .filter-btn {
+        padding: 8px 18px;
+        font-size: 0.85rem;
+    }
+    
     .pagination {
         gap: 5px;
     }
@@ -904,8 +1005,23 @@ footer p {
         font-size: 1.1rem;
     }
     
+    .plant-description {
+        font-size: 0.85rem;
+    }
+    
     .plant-price {
         font-size: 1.2rem;
+    }
+    
+    .plant-tags {
+        top: 8px;
+        left: 8px;
+        gap: 4px;
+    }
+    
+    .plant-tag {
+        padding: 3px 8px;
+        font-size: 0.7rem;
     }
     
     .contact-icon {

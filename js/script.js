@@ -14,21 +14,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 식물 데이터 (실제로는 서버나 별도 파일에서 가져올 수 있습니다)
 const plantsData = [
-    { id: 1, name: '에케베리아 라울', species: 'Echeveria Laui', price: 15000, image: 'images/image.png', icon: 'leaf' },
-    { id: 2, name: '하월시아 쿠페리', species: 'Haworthia cooperi', price: 12000, image: '', icon: 'leaf' },
-    { id: 3, name: '세덤 모르가니아눔', species: 'Sedum morganianum', price: 8000, image: '', icon: 'leaf' },
-    { id: 4, name: '크라슐라 오바타', species: 'Crassula ovata', price: 10000, image: '', icon: 'leaf' },
-    { id: 5, name: '알로에 베라', species: 'Aloe vera', price: 9000, image: '', icon: 'leaf' },
-    { id: 6, name: '그라프토페탈룸', species: 'Graptopetalum', price: 11000, image: '', icon: 'leaf' },
-    { id: 7, name: '에케베리아 퍼플딜라이트', species: 'Echeveria Purple Delight', price: 18000, image: '', icon: 'leaf' },
-    { id: 8, name: '세덤 루브로틴크툼', species: 'Sedum rubrotinctum', price: 7000, image: '', icon: 'leaf' },
-    { id: 9, name: '하월시아 옵투사', species: 'Haworthia obtusa', price: 13000, image: '', icon: 'leaf' },
-    { id: 10, name: '크라슐라 페레그리나', species: 'Crassula perforata', price: 9500, image: '', icon: 'leaf' },
-    { id: 11, name: '에케베리아 블랙프린스', species: 'Echeveria Black Prince', price: 16000, image: '', icon: 'leaf' },
-    { id: 12, name: '세덤 버리토', species: 'Sedum burrito', price: 8500, image: '', icon: 'leaf' },
-    { id: 13, name: '그라프토베리아', species: 'Graptoveria', price: 14000, image: '', icon: 'leaf' },
-    { id: 14, name: '하월시아 리미폴리아', species: 'Haworthia limifolia', price: 11500, image: '', icon: 'leaf' },
-    { id: 15, name: '알로에 노비리스', species: 'Aloe nobilis', price: 10500, image: '', icon: 'leaf' },
+    { id: 1, name: '에케베리아 라울', description: '벨벳처럼 부드러운 분홍빛 잎', price: 15000, image: 'images/image.png', icon: 'leaf', tags: ['인기', '추천'] },
+    { id: 2, name: '하월시아 쿠페리', description: '투명한 창문 같은 잎이 매력적', price: 12000, image: '', icon: 'leaf', tags: ['추천'] },
+    { id: 3, name: '세덤 모르가니아눔', description: '늘어지는 줄기가 아름다운 다육이', price: 8000, image: '', icon: 'leaf', tags: [] },
+    { id: 4, name: '크라슐라 오바타', description: '행운을 가져다주는 염전나무', price: 10000, image: '', icon: 'leaf', tags: ['인기'] },
+    { id: 5, name: '알로에 베라', description: '건강에 좋은 다육식물', price: 9000, image: '', icon: 'leaf', tags: [] },
+    { id: 6, name: '그라프토페탈룸', description: '연한 보라빛이 매력적인 다육이', price: 11000, image: '', icon: 'leaf', tags: [] },
+    { id: 7, name: '에케베리아 퍼플딜라이트', description: '진한 보라색 장미 모양 다육이', price: 18000, image: '', icon: 'leaf', tags: ['인기', '추천'] },
+    { id: 8, name: '세덤 루브로틴크툼', description: '젤리빈처럼 통통한 잎', price: 7000, image: '', icon: 'leaf', tags: [] },
+    { id: 9, name: '하월시아 옵투사', description: '물방울 같은 통통한 잎', price: 13000, image: '', icon: 'leaf', tags: ['추천'] },
+    { id: 10, name: '크라슐라 페레그리나', description: '쌓인 동전처럼 독특한 모양', price: 9500, image: '', icon: 'leaf', tags: [] },
+    { id: 11, name: '에케베리아 블랙프린스', description: '검은 장미 같은 고급스러운 다육이', price: 16000, image: '', icon: 'leaf', tags: ['인기'] },
+    { id: 12, name: '세덤 버리토', description: '부리또처럼 통통한 잎이 귀여운', price: 8500, image: '', icon: 'leaf', tags: [] },
+    { id: 13, name: '그라프토베리아', description: '파스텔톤의 로제트형 다육이', price: 14000, image: '', icon: 'leaf', tags: ['추천'] },
+    { id: 14, name: '하월시아 리미폴리아', description: '독특한 무늬가 있는 하월시아', price: 11500, image: '', icon: 'leaf', tags: [] },
+    { id: 15, name: '알로에 노비리스', description: '작고 귀여운 알로에', price: 10500, image: '', icon: 'leaf', tags: [] },
 ];
 
 // 갤러리 상태 관리
@@ -37,7 +37,8 @@ let galleryState = {
     filteredPlants: plantsData,
     currentPage: 1,
     itemsPerPage: getItemsPerPage(),
-    searchQuery: ''
+    searchQuery: '',
+    activeFilter: 'all'
 };
 
 /**
@@ -77,6 +78,19 @@ function initPlantsGallery() {
         clearButton.addEventListener('click', clearSearch);
     }
     
+    // 필터 버튼 초기화
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const filter = this.getAttribute('data-filter');
+            handleFilter(filter);
+            
+            // 활성 버튼 표시
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+    
     // 화면 크기 변경 시 페이지당 항목 수 업데이트
     let resizeTimeout;
     window.addEventListener('resize', function() {
@@ -111,16 +125,40 @@ function handleSearch() {
         clearButton.style.display = query ? 'flex' : 'none';
     }
     
-    // 검색어로 필터링
-    if (query) {
-        galleryState.filteredPlants = galleryState.allPlants.filter(plant => 
-            plant.name.toLowerCase().includes(query) ||
-            plant.species.toLowerCase().includes(query)
-        );
-    } else {
-        galleryState.filteredPlants = galleryState.allPlants;
+    applyFilters();
+}
+
+/**
+ * 필터 처리
+ */
+function handleFilter(filter) {
+    galleryState.activeFilter = filter;
+    galleryState.currentPage = 1; // 첫 페이지로 리셋
+    applyFilters();
+}
+
+/**
+ * 검색어와 필터를 모두 적용
+ */
+function applyFilters() {
+    let filtered = galleryState.allPlants;
+    
+    // 검색어 필터링
+    if (galleryState.searchQuery) {
+        filtered = filtered.filter(plant => {
+            return plant.name.toLowerCase().includes(galleryState.searchQuery) ||
+                   (plant.description && plant.description.toLowerCase().includes(galleryState.searchQuery));
+        });
     }
     
+    // 태그 필터링
+    if (galleryState.activeFilter !== 'all') {
+        filtered = filtered.filter(plant => {
+            return plant.tags && plant.tags.includes(galleryState.activeFilter);
+        });
+    }
+    
+    galleryState.filteredPlants = filtered;
     renderPlants();
 }
 
@@ -139,10 +177,9 @@ function clearSearch() {
     }
     
     galleryState.searchQuery = '';
-    galleryState.filteredPlants = galleryState.allPlants;
     galleryState.currentPage = 1;
     
-    renderPlants();
+    applyFilters();
 }
 
 /**
@@ -217,14 +254,22 @@ function createPlantCard(plant) {
                 </svg>
            </div>`;
     
+    // 태그 HTML 생성
+    const tagsHTML = plant.tags && plant.tags.length > 0
+        ? `<div class="plant-tags">
+                ${plant.tags.map(tag => `<span class="plant-tag">${tag}</span>`).join('')}
+           </div>`
+        : '';
+    
     return `
         <div class="plant-card" data-plant-id="${plant.id}">
             <div class="plant-image-container">
                 ${imageHTML}
+                ${tagsHTML}
             </div>
             <div class="plant-info">
                 <h3 class="plant-name">${plant.name}</h3>
-                <p class="plant-species">${plant.species}</p>
+                <p class="plant-description">${plant.description}</p>
                 <div class="plant-price">
                     ${plant.price.toLocaleString()}원
                 </div>

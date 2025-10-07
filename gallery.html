@@ -109,6 +109,21 @@
                 </div>
             </div>
 
+            <!-- 필터 섹션 -->
+            <div class="filter-container">
+                <div class="filter-label">
+                    <svg class="filter-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                    </svg>
+                    <span>필터</span>
+                </div>
+                <div class="filter-buttons" id="filterButtons">
+                    <button class="filter-btn active" data-filter="all">전체</button>
+                    <button class="filter-btn" data-filter="인기">인기</button>
+                    <button class="filter-btn" data-filter="추천">추천</button>
+                </div>
+            </div>
+
             <!-- 식물 카드 그리드 -->
             <div id="plantsGrid" class="plants-grid">
                 <!-- 식물 카드들이 JavaScript로 동적으로 생성됩니다 -->
