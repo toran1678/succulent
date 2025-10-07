@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>다육이 소개 - Succulent Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            animation: fadeInDown 1s ease;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s ease;
+        }
+
+        .intro {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            border-left: 5px solid #667eea;
+        }
+
+        .intro h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .intro p {
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid #e9ecef;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+        }
+
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-icon {
+            font-size: 1.8em;
+        }
+
+        .card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .card li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .card li:before {
+            content: "🌵";
+            position: absolute;
+            left: 0;
+        }
+
+        .tips {
+            background: #e7f5ff;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 40px;
+            border-left: 5px solid #339af0;
+        }
+
+        .tips h3 {
+            color: #1c7ed6;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .tips ul {
+            list-style: none;
+        }
+
+        .tips li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 1.05em;
+        }
+
+        .tips li:before {
+            content: "💡";
+            position: absolute;
+            left: 0;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            padding: 20px;
+            opacity: 0.9;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .content {
+                padding: 25px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌵 다육이의 세계 🌵</h1>
+            <p class="subtitle">귀엽고 키우기 쉬운 식물, 다육이를 소개합니다</p>
+        </header>
+
+        <div class="content">
+            <div class="intro">
+                <h2>다육식물이란?</h2>
+                <p>
+                    다육식물(succulent)은 두껍고 살이 찐 잎이나 줄기에 물을 저장하는 식물을 말합니다. 
+                    건조한 환경에서 살아남기 위해 진화한 이 식물들은 관리가 쉽고 다양한 모양과 색깔로 
+                    인테리어 식물로 큰 사랑을 받고 있습니다. 🪴
+                </p>
+            </div>
+
+            <div class="grid">
+                <div class="card">
+                    <h3><span class="card-icon">💧</span> 물주기</h3>
+                    <ul>
+                        <li>흙이 완전히 마른 후에 물주기</li>
+                        <li>여름: 1-2주에 1번</li>
+                        <li>겨울: 3-4주에 1번</li>
+                        <li>과습 주의! 적게 주는 게 좋아요</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><span class="card-icon">☀️</span> 햇빛</h3>
+                    <ul>
+                        <li>밝은 간접광이 가장 좋아요</li>
+                        <li>하루 4-6시간 햇빛 필요</li>
+                        <li>직사광선은 잎이 탈 수 있어요</li>
+                        <li>창가가 최적의 장소</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><span class="card-icon">🌡️</span> 온도</h3>
+                    <ul>
+                        <li>최적 온도: 15-25°C</li>
+                        <li>추위에 약한 편이에요</li>
+                        <li>겨울철 실내 관리 필수</li>
+                        <li>통풍이 잘 되는 곳이 좋아요</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><span class="card-icon">🌱</span> 흙과 분갈이</h3>
+                    <ul>
+                        <li>배수가 잘 되는 흙 사용</li>
+                        <li>다육이 전용 흙 추천</li>
+                        <li>1-2년마다 분갈이</li>
+                        <li>뿌리가 꽉 차면 바꿔주세요</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tips">
+                <h3>🌟 초보자를 위한 꿀팁</h3>
+                <ul>
+                    <li><strong>물 주기를 잊었다면?</strong> 괜찮아요! 다육이는 과습보다 건조를 좋아합니다.</li>
+                    <li><strong>잎이 쭈글쭈글해졌다면?</strong> 물이 필요한 신호예요. 충분히 물을 주세요.</li>
+                    <li><strong>잎이 노랗게 변했다면?</strong> 과습일 가능성이 높아요. 물 주기를 줄이세요.</li>
+                    <li><strong>웃자람 현상</strong> 햇빛이 부족하면 줄기가 길게 자라요. 더 밝은 곳으로 옮기세요.</li>
+                    <li><strong>번식하기</strong> 떨어진 잎을 흙 위에 놓으면 새로운 개체가 자라요!</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <p>🌵 다육이와 함께하는 힐링 라이프 🌵</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">Made with 💚 for succulent lovers</p>
+        </footer>
+    </div>
+</body>
+</html>
+
