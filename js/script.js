@@ -3,7 +3,340 @@ document.addEventListener('DOMContentLoaded', function() {
     initMobileNavigation();
     initScrollAnimations();
     initActiveNavHighlight();
+    
+    // 갤러리 페이지에서만 식물 갤러리 초기화
+    if (document.getElementById('plantsGrid')) {
+        initPlantsGallery();
+    }
 });
+
+// ====== 식물 갤러리 시스템 ======
+
+// 식물 데이터 (실제로는 서버나 별도 파일에서 가져올 수 있습니다)
+const plantsData = [
+    { id: 1, name: '에케베리아 라울', species: 'Echeveria Laui', price: 15000, image: '/images/image.png', icon: 'leaf' },
+    { id: 2, name: '하월시아 쿠페리', species: 'Haworthia cooperi', price: 12000, image: '', icon: 'leaf' },
+    { id: 3, name: '세덤 모르가니아눔', species: 'Sedum morganianum', price: 8000, image: '', icon: 'leaf' },
+    { id: 4, name: '크라슐라 오바타', species: 'Crassula ovata', price: 10000, image: '', icon: 'leaf' },
+    { id: 5, name: '알로에 베라', species: 'Aloe vera', price: 9000, image: '', icon: 'leaf' },
+    { id: 6, name: '그라프토페탈룸', species: 'Graptopetalum', price: 11000, image: '', icon: 'leaf' },
+    { id: 7, name: '에케베리아 퍼플딜라이트', species: 'Echeveria Purple Delight', price: 18000, image: '', icon: 'leaf' },
+    { id: 8, name: '세덤 루브로틴크툼', species: 'Sedum rubrotinctum', price: 7000, image: '', icon: 'leaf' },
+    { id: 9, name: '하월시아 옵투사', species: 'Haworthia obtusa', price: 13000, image: '', icon: 'leaf' },
+    { id: 10, name: '크라슐라 페레그리나', species: 'Crassula perforata', price: 9500, image: '', icon: 'leaf' },
+    { id: 11, name: '에케베리아 블랙프린스', species: 'Echeveria Black Prince', price: 16000, image: '', icon: 'leaf' },
+    { id: 12, name: '세덤 버리토', species: 'Sedum burrito', price: 8500, image: '', icon: 'leaf' },
+    { id: 13, name: '그라프토베리아', species: 'Graptoveria', price: 14000, image: '', icon: 'leaf' },
+    { id: 14, name: '하월시아 리미폴리아', species: 'Haworthia limifolia', price: 11500, image: '', icon: 'leaf' },
+    { id: 15, name: '알로에 노비리스', species: 'Aloe nobilis', price: 10500, image: '', icon: 'leaf' },
+];
+
+// 갤러리 상태 관리
+let galleryState = {
+    allPlants: plantsData,
+    filteredPlants: plantsData,
+    currentPage: 1,
+    itemsPerPage: getItemsPerPage(),
+    searchQuery: ''
+};
+
+/**
+ * 화면 크기에 따라 페이지당 항목 수 결정
+ */
+function getItemsPerPage() {
+    // 768px 이하는 모바일/태블릿으로 간주
+    if (window.innerWidth <= 768) {
+        return 10; // 2열 x 5행
+    } else {
+        return 9; // 3열 x 3행
+    }
+}
+
+/**
+ * 식물 갤러리 초기화
+ */
+function initPlantsGallery() {
+    // 검색 기능 초기화
+    const searchInput = document.getElementById('searchInput');
+    const clearButton = document.getElementById('clearSearch');
+    
+    if (searchInput) {
+        searchInput.addEventListener('input', handleSearch);
+        
+        // 실시간 검색을 위한 debounce
+        let searchTimeout;
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                handleSearch();
+            }, 300);
+        });
+    }
+    
+    if (clearButton) {
+        clearButton.addEventListener('click', clearSearch);
+    }
+    
+    // 화면 크기 변경 시 페이지당 항목 수 업데이트
+    let resizeTimeout;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            const newItemsPerPage = getItemsPerPage();
+            if (galleryState.itemsPerPage !== newItemsPerPage) {
+                galleryState.itemsPerPage = newItemsPerPage;
+                galleryState.currentPage = 1; // 첫 페이지로 리셋
+                renderPlants();
+            }
+        }, 300);
+    });
+    
+    // 초기 식물 표시
+    renderPlants();
+}
+
+/**
+ * 검색 처리
+ */
+function handleSearch() {
+    const searchInput = document.getElementById('searchInput');
+    const clearButton = document.getElementById('clearSearch');
+    const query = searchInput.value.toLowerCase().trim();
+    
+    galleryState.searchQuery = query;
+    galleryState.currentPage = 1;
+    
+    // Clear 버튼 표시/숨김
+    if (clearButton) {
+        clearButton.style.display = query ? 'flex' : 'none';
+    }
+    
+    // 검색어로 필터링
+    if (query) {
+        galleryState.filteredPlants = galleryState.allPlants.filter(plant => 
+            plant.name.toLowerCase().includes(query) ||
+            plant.species.toLowerCase().includes(query)
+        );
+    } else {
+        galleryState.filteredPlants = galleryState.allPlants;
+    }
+    
+    renderPlants();
+}
+
+/**
+ * 검색 초기화
+ */
+function clearSearch() {
+    const searchInput = document.getElementById('searchInput');
+    const clearButton = document.getElementById('clearSearch');
+    
+    if (searchInput) {
+        searchInput.value = '';
+    }
+    if (clearButton) {
+        clearButton.style.display = 'none';
+    }
+    
+    galleryState.searchQuery = '';
+    galleryState.filteredPlants = galleryState.allPlants;
+    galleryState.currentPage = 1;
+    
+    renderPlants();
+}
+
+/**
+ * 식물 카드 렌더링
+ */
+function renderPlants() {
+    const plantsGrid = document.getElementById('plantsGrid');
+    const noResults = document.getElementById('noResults');
+    const resultsCount = document.getElementById('resultsCount');
+    
+    if (!plantsGrid) return;
+    
+    // 화면 크기에 따라 itemsPerPage 업데이트
+    galleryState.itemsPerPage = getItemsPerPage();
+    
+    const { filteredPlants, currentPage, itemsPerPage } = galleryState;
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const plantsToShow = filteredPlants.slice(startIndex, endIndex);
+    
+    // 디버깅용 로그
+    console.log('렌더링 정보:', {
+        화면너비: window.innerWidth,
+        itemsPerPage: itemsPerPage,
+        표시할식물수: plantsToShow.length,
+        시작인덱스: startIndex,
+        끝인덱스: endIndex
+    });
+    
+    // 결과 카운트 업데이트
+    if (resultsCount) {
+        if (galleryState.searchQuery) {
+            resultsCount.textContent = `검색 결과: ${filteredPlants.length}개의 식물`;
+        } else {
+            resultsCount.textContent = `총 ${filteredPlants.length}개의 식물`;
+        }
+    }
+    
+    // 결과가 없는 경우
+    if (plantsToShow.length === 0) {
+        plantsGrid.innerHTML = '';
+        if (noResults) {
+            noResults.style.display = 'block';
+        }
+        renderPagination();
+        return;
+    }
+    
+    if (noResults) {
+        noResults.style.display = 'none';
+    }
+    
+    // 식물 카드 생성
+    plantsGrid.innerHTML = plantsToShow.map(plant => createPlantCard(plant)).join('');
+    
+    // 페이지네이션 렌더링
+    renderPagination();
+    
+    // 카드 애니메이션
+    animatePlantCards();
+}
+
+/**
+ * 식물 카드 HTML 생성
+ */
+function createPlantCard(plant) {
+    const imageHTML = plant.image 
+        ? `<img src="${plant.image}" alt="${plant.name}" class="plant-image">`
+        : `<div class="plant-image-placeholder">
+                <svg class="plant-placeholder-icon">
+                    <use href="#icon-${plant.icon}"></use>
+                </svg>
+           </div>`;
+    
+    return `
+        <div class="plant-card" data-plant-id="${plant.id}">
+            <div class="plant-image-container">
+                ${imageHTML}
+            </div>
+            <div class="plant-info">
+                <h3 class="plant-name">${plant.name}</h3>
+                <p class="plant-species">${plant.species}</p>
+                <div class="plant-price">
+                    ${plant.price.toLocaleString()}원
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+/**
+ * 페이지네이션 렌더링
+ */
+function renderPagination() {
+    const pagination = document.getElementById('pagination');
+    if (!pagination) return;
+    
+    const { filteredPlants, currentPage, itemsPerPage } = galleryState;
+    const totalPages = Math.ceil(filteredPlants.length / itemsPerPage);
+    
+    if (totalPages <= 1) {
+        pagination.innerHTML = '';
+        return;
+    }
+    
+    let paginationHTML = '';
+    
+    // 이전 버튼
+    paginationHTML += `
+        <button class="pagination-button" ${currentPage === 1 ? 'disabled' : ''} onclick="goToPage(${currentPage - 1})">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </button>
+    `;
+    
+    // 페이지 번호
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage < maxVisiblePages - 1) {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    if (startPage > 1) {
+        paginationHTML += `<button class="pagination-button" onclick="goToPage(1)">1</button>`;
+        if (startPage > 2) {
+            paginationHTML += `<span class="pagination-dots">...</span>`;
+        }
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+        paginationHTML += `
+            <button class="pagination-button ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">
+                ${i}
+            </button>
+        `;
+    }
+    
+    if (endPage < totalPages) {
+        if (endPage < totalPages - 1) {
+            paginationHTML += `<span class="pagination-dots">...</span>`;
+        }
+        paginationHTML += `<button class="pagination-button" onclick="goToPage(${totalPages})">${totalPages}</button>`;
+    }
+    
+    // 다음 버튼
+    paginationHTML += `
+        <button class="pagination-button" ${currentPage === totalPages ? 'disabled' : ''} onclick="goToPage(${currentPage + 1})">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+        </button>
+    `;
+    
+    pagination.innerHTML = paginationHTML;
+}
+
+/**
+ * 페이지 이동
+ */
+function goToPage(pageNumber) {
+    const { filteredPlants, itemsPerPage } = galleryState;
+    const totalPages = Math.ceil(filteredPlants.length / itemsPerPage);
+    
+    if (pageNumber < 1 || pageNumber > totalPages) return;
+    
+    galleryState.currentPage = pageNumber;
+    renderPlants();
+    
+    // 갤러리 섹션으로 부드럽게 스크롤
+    const gallerySection = document.getElementById('gallery');
+    if (gallerySection) {
+        gallerySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+/**
+ * 식물 카드 애니메이션
+ */
+function animatePlantCards() {
+    const cards = document.querySelectorAll('.plant-card');
+    cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        
+        setTimeout(() => {
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 50);
+    });
+}
 
 /**
  * 모바일 네비게이션 버튼 클릭 이벤트 초기화
@@ -12,21 +345,24 @@ function initMobileNavigation() {
     const navButtons = document.querySelectorAll('.nav-button');
     
     navButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const targetId = this.getAttribute('data-target');
-            const targetSection = document.getElementById(targetId);
-            
-            if (targetSection) {
-                // 부드러운 스크롤로 해당 섹션으로 이동
-                targetSection.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+        // a 태그가 아닌 button 태그만 클릭 이벤트 추가
+        if (button.tagName === 'BUTTON') {
+            button.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const targetSection = document.getElementById(targetId);
                 
-                // 활성 버튼 표시
-                updateActiveButton(this);
-            }
-        });
+                if (targetSection) {
+                    // 부드러운 스크롤로 해당 섹션으로 이동
+                    targetSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    
+                    // 활성 버튼 표시
+                    updateActiveButton(this);
+                }
+            });
+        }
     });
 }
 

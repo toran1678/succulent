@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>아띠아 다육 - 다육식물 전문</title>
     <meta name="description" content="아띠아 다육에서 다양한 다육 식물을 만나보세요">
+    <meta name="google-site-verification" content="Pl0vke1tAtoLXtggDYnTaRFJJMVLkVzY7UlFRL3DLFI" />
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -73,6 +74,12 @@
                 <path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/>
             </symbol>
             
+            <!-- 유튜브 아이콘 -->
+            <symbol id="icon-youtube" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/>
+                <path d="m10 15 5-3-5-3z"/>
+            </symbol>
+            
             <!-- 전구 아이콘 -->
             <symbol id="icon-lightbulb" viewBox="0 0 24 24">
                 <path d="M9 21c0 .5.4 1 1 1h4c.6 0 1-.5 1-1v-1H9v1zm3-19C8.1 2 5 5.1 5 9c0 2.4 1.2 4.5 3 5.7V17c0 .5.4 1 1 1h6c.6 0 1-.5 1-1v-2.3c1.8-1.3 3-3.4 3-5.7 0-3.9-3.1-7-7-7z"/>
@@ -108,7 +115,7 @@
                     건강하고 아름다운 다육이들을 정성껏 키워<br>
                     여러분께 전해드립니다
                 </p>
-                <a href="#gallery" class="cta-button">다육 구경하기</a>
+                <a href="gallery.html" class="cta-button">다육 구경하기</a>
             </div>
         </div>
     </header>
@@ -147,58 +154,6 @@
         </div>
     </section>
 
-    <!-- 갤러리 섹션 -->
-    <section id="gallery" class="section gallery-section">
-        <div class="container">
-            <h2 class="section-title">다육 식물 갤러리</h2>
-            <p class="section-subtitle">아띠아 다육이 키운 사랑스러운 다육이들을 만나보세요</p>
-            
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <svg class="placeholder-icon"><use href="#icon-cactus"></use></svg>
-                        <p>에케베리아</p>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <svg class="placeholder-icon"><use href="#icon-plant1"></use></svg>
-                        <p>하월시아</p>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <svg class="placeholder-icon"><use href="#icon-leaf"></use></svg>
-                        <p>세덤</p>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <svg class="placeholder-icon"><use href="#icon-plant2"></use></svg>
-                        <p>크라슐라</p>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <svg class="placeholder-icon"><use href="#icon-leaf"></use></svg>
-                        <p>알로에</p>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <svg class="placeholder-icon"><use href="#icon-cactus"></use></svg>
-                        <p>그라프토페탈룸</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="gallery-note">
-                <svg class="icon-note"><use href="#icon-lightbulb"></use></svg>
-                <p>실제 다육 식물 이미지는 images 폴더에 추가하시면 자동으로 표시됩니다</p>
-            </div>
-        </div>
-    </section>
-
     <!-- 문의 섹션 -->
     <section id="contact" class="section contact-section">
         <div class="container">
@@ -229,6 +184,15 @@
                             <p>안전하고 정성스러운<br>포장 서비스 제공</p>
                         </div>
                     </div>
+                    
+                    <div class="contact-item">
+                        <svg class="contact-icon icon-youtube-contact"><use href="#icon-youtube"></use></svg>
+                        <div class="contact-info">
+                            <h3>유튜브 채널</h3>
+                            <a href="https://youtube.com/@Attiasucculents" target="_blank" class="contact-link youtube-link">채널 방문하기</a>
+                            <p class="contact-time">실시간 방송 및 숏폼 영상</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -256,10 +220,10 @@
             <svg class="nav-icon"><use href="#icon-info"></use></svg>
             <span class="nav-label">소개</span>
         </button>
-        <button class="nav-button" data-target="gallery" aria-label="갤러리로 이동">
+        <a href="gallery.html" class="nav-button" aria-label="갤러리로 이동">
             <svg class="nav-icon"><use href="#icon-gallery"></use></svg>
             <span class="nav-label">갤러리</span>
-        </button>
+        </a>
         <button class="nav-button" data-target="contact" aria-label="연락처로 이동">
             <svg class="nav-icon"><use href="#icon-phone"></use></svg>
             <span class="nav-label">연락처</span>

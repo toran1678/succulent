@@ -233,68 +233,303 @@ svg.icon-note {
 }
 
 /* 갤러리 섹션 */
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-    margin-bottom: 30px;
+.gallery-section {
+    background-color: var(--bg-light);
+    min-height: 70vh;
 }
 
-.gallery-item {
+/* 갤러리 페이지 헤더 */
+.gallery-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: var(--text-light);
+    padding: 30px 20px;
+    position: relative;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-light);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 8px 16px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    transition: var(--transition);
+    margin-bottom: 15px;
+    cursor: pointer;
+    position: relative;
+    z-index: 10;
+}
+
+.back-button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: translateX(-5px);
+}
+
+.back-button:active {
+    transform: translateX(-3px);
+}
+
+.back-button svg {
+    width: 20px;
+    height: 20px;
+}
+
+.gallery-title {
+    font-size: 2rem;
+    text-align: center;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.title-icon {
+    width: 40px;
+    height: 40px;
+    fill: currentColor;
+}
+
+/* 검색바 */
+.search-container {
+    max-width: 600px;
+    margin: 0 auto 40px;
+}
+
+.search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: var(--bg-white);
+    border-radius: 50px;
+    padding: 12px 20px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.search-box:focus-within {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+.search-icon {
+    width: 24px;
+    height: 24px;
+    color: #999;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    color: var(--text-dark);
+    background: transparent;
+}
+
+.search-input::placeholder {
+    color: #999;
+}
+
+.clear-search {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+.clear-search svg {
+    width: 20px;
+    height: 20px;
+    color: #999;
+}
+
+.clear-search:hover {
+    background-color: #f0f0f0;
+}
+
+.search-results-info {
+    text-align: center;
+    margin-top: 15px;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+/* 식물 카드 그리드 */
+.plants-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+/* 모바일에서 2열 고정 */
+@media (max-width: 768px) {
+    .plants-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+}
+
+.plant-card {
+    background-color: var(--bg-white);
     border-radius: var(--border-radius);
     overflow: hidden;
     box-shadow: var(--shadow);
     transition: var(--transition);
-    background-color: var(--bg-white);
-    aspect-ratio: 1;
+    cursor: pointer;
 }
 
-.gallery-item:hover {
+.plant-card:hover {
     transform: translateY(-8px);
     box-shadow: var(--shadow-lg);
 }
 
-.gallery-placeholder {
+.plant-image-container {
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    position: relative;
+}
+
+.plant-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.plant-image-placeholder {
     width: 100%;
     height: 100%;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-    padding: 20px;
 }
 
-.placeholder-icon {
+.plant-placeholder-icon {
     width: 80px;
     height: 80px;
     fill: var(--secondary-color);
-    margin-bottom: 15px;
 }
 
-.gallery-placeholder p {
-    font-size: 1.2rem;
-    font-weight: 600;
+.plant-info {
+    padding: 20px;
+}
+
+.plant-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+}
+
+.plant-species {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 12px;
+    font-style: italic;
+}
+
+.plant-price {
+    font-size: 1.4rem;
+    font-weight: 700;
     color: var(--primary-color);
 }
 
-.gallery-note {
-    background-color: #fff3cd;
-    border: 2px dashed #ffc107;
-    border-radius: var(--border-radius);
-    padding: 20px;
+.plant-price-label {
+    font-size: 0.9rem;
+    color: #999;
+    margin-left: 4px;
+}
+
+/* 결과 없음 */
+.no-results {
     text-align: center;
-    margin-top: 30px;
+    padding: 60px 20px;
+}
+
+.no-results-icon {
+    width: 80px;
+    height: 80px;
+    color: #ccc;
+    margin: 0 auto 20px;
+}
+
+.no-results h3 {
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.no-results p {
+    color: #666;
+    font-size: 1rem;
+}
+
+/* 페이지네이션 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+.pagination-button {
+    min-width: 40px;
+    height: 40px;
+    padding: 8px 12px;
+    background-color: var(--bg-white);
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-dark);
+    transition: var(--transition);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
 }
 
-.gallery-note p {
-    margin: 0;
-    color: #856404;
-    font-weight: 500;
+.pagination-button:hover:not(:disabled) {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.pagination-button.active {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border-color: var(--primary-color);
+}
+
+.pagination-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination-button svg {
+    width: 18px;
+    height: 18px;
+}
+
+.pagination-dots {
+    padding: 0 8px;
+    color: #999;
+    font-weight: 700;
 }
 
 /* 연락처 섹션 */
@@ -348,6 +583,10 @@ svg.icon-note {
     color: #E91E63;
 }
 
+.contact-icon.icon-youtube-contact {
+    color: #FF0000;
+}
+
 .contact-info h3 {
     font-size: 1.3rem;
     margin-bottom: 10px;
@@ -367,6 +606,15 @@ svg.icon-note {
 .contact-link:hover {
     color: var(--accent-color);
     transform: scale(1.05);
+}
+
+.contact-link.youtube-link {
+    color: var(--secondary-color);
+    font-size: 1.1rem;
+}
+
+.contact-link.youtube-link:hover {
+    color: var(--accent-color);
 }
 
 .contact-time {
@@ -428,6 +676,7 @@ footer p {
     color: #666;
     border-radius: 12px;
     min-width: 70px;
+    text-decoration: none;
 }
 
 .nav-button:hover,
@@ -492,8 +741,8 @@ footer p {
         font-size: 1.6rem;
     }
 
-    .gallery-grid {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    .plants-grid {
+        grid-template-columns: repeat(2, 1fr);
         gap: 15px;
     }
 
@@ -505,6 +754,20 @@ footer p {
 
     .section {
         padding: 40px 15px;
+    }
+    
+    .search-input {
+        font-size: 0.95rem;
+    }
+    
+    .pagination {
+        gap: 5px;
+    }
+    
+    .pagination-button {
+        min-width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
     }
 }
 
@@ -559,9 +822,17 @@ footer p {
         height: 48px;
     }
     
-    .placeholder-icon {
+    .plant-placeholder-icon {
         width: 60px;
         height: 60px;
+    }
+    
+    .plant-name {
+        font-size: 1.1rem;
+    }
+    
+    .plant-price {
+        font-size: 1.2rem;
     }
     
     .contact-icon {
@@ -571,8 +842,18 @@ footer p {
     
     .contact-icon.icon-phone-contact,
     .contact-icon.icon-question-contact,
-    .contact-icon.icon-gift-contact {
+    .contact-icon.icon-gift-contact,
+    .contact-icon.icon-youtube-contact {
         stroke-width: 2;
+    }
+    
+    .gallery-title {
+        font-size: 1.5rem;
+    }
+    
+    .title-icon {
+        width: 30px;
+        height: 30px;
     }
 }
 

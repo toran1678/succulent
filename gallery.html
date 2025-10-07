@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>다육 식물 갤러리 - 아띠아 다육</title>
+    <meta name="description" content="아띠아 다육의 다양한 다육 식물을 만나보세요">
+    <meta name="google-site-verification" content="Pl0vke1tAtoLXtggDYnTaRFJJMVLkVzY7UlFRL3DLFI" />
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- SVG 아이콘 스프라이트 -->
+    <svg style="display: none;">
+        <defs>
+            <!-- 다육식물 아이콘 -->
+            <symbol id="icon-cactus" viewBox="0 0 24 24">
+                <path d="M9 2C8.45 2 8 2.45 8 3v2h-.5C6.67 5 6 5.67 6 6.5V10c0 .83.67 1.5 1.5 1.5H8v9.5c0 1.38 1.12 2.5 2.5 2.5h3c1.38 0 2.5-1.12 2.5-2.5V11.5h.5c.83 0 1.5-.67 1.5-1.5V6.5c0-.83-.67-1.5-1.5-1.5H16V3c0-.55-.45-1-1-1h-2c-.55 0-1 .45-1 1v2H9V3c0-.55-.45-1-1-1zm1 8v11h4V10h-4z"/>
+            </symbol>
+            
+            <!-- 홈 아이콘 -->
+            <symbol id="icon-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/>
+                <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            </symbol>
+            
+            <!-- 정보 아이콘 -->
+            <symbol id="icon-info" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+            </symbol>
+            
+            <!-- 갤러리 아이콘 -->
+            <symbol id="icon-gallery" viewBox="0 0 24 24">
+                <path d="M22 16V4c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2zm-11-4l2.03 2.71L16 11l4 5H8l3-4zM2 6v14c0 1.1.9 2 2 2h14v-2H4V6H2z"/>
+            </symbol>
+            
+            <!-- 전화 아이콘 -->
+            <symbol id="icon-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>
+            </symbol>
+            
+            <!-- 잎 아이콘 (다양한 식물용) -->
+            <symbol id="icon-leaf" viewBox="0 0 24 24">
+                <path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.30C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/>
+            </symbol>
+            
+            <!-- 새싹 아이콘 -->
+            <symbol id="icon-sprout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 9.536V7a4 4 0 0 1 4-4h1.5a.5.5 0 0 1 .5.5V5a4 4 0 0 1-4 4 4 4 0 0 0-4 4c0 2 1 3 1 5a5 5 0 0 1-1 3"/>
+                <path d="M4 9a5 5 0 0 1 8 4 5 5 0 0 1-8-4"/>
+                <path d="M5 21h14"/>
+            </symbol>
+            
+            <!-- 식물1 -->
+            <symbol id="icon-plant1" viewBox="0 0 24 24">
+                <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
+            </symbol>
+            
+            <!-- 식물2 -->
+            <symbol id="icon-plant2" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3-8c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3z"/>
+            </symbol>
+        </defs>
+    </svg>
+
+    <!-- 헤더 섹션 -->
+    <header class="gallery-header">
+        <div class="container">
+            <a href="index.html" class="back-button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>홈으로</span>
+            </a>
+            <h1 class="gallery-title">
+                <svg class="title-icon"><use href="#icon-sprout"></use></svg>
+                다육 식물 갤러리
+            </h1>
+        </div>
+    </header>
+
+    <!-- 갤러리 섹션 -->
+    <section class="section gallery-section">
+        <div class="container">
+            <p class="section-subtitle">아띠아 다육이 키운 사랑스러운 다육이들을 만나보세요</p>
+            
+            <!-- 검색바 -->
+            <div class="search-container">
+                <div class="search-box">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        class="search-input" 
+                        placeholder="식물 이름으로 검색하세요..."
+                        autocomplete="off"
+                    >
+                    <button id="clearSearch" class="clear-search" style="display: none;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="search-results-info">
+                    <span id="resultsCount"></span>
+                </div>
+            </div>
+
+            <!-- 식물 카드 그리드 -->
+            <div id="plantsGrid" class="plants-grid">
+                <!-- 식물 카드들이 JavaScript로 동적으로 생성됩니다 -->
+            </div>
+
+            <!-- 결과 없음 메시지 -->
+            <div id="noResults" class="no-results" style="display: none;">
+                <svg class="no-results-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                <h3>검색 결과가 없습니다</h3>
+                <p>다른 검색어로 다시 시도해보세요</p>
+            </div>
+
+            <!-- 페이지네이션 -->
+            <div id="pagination" class="pagination">
+                <!-- 페이지네이션 버튼들이 JavaScript로 동적으로 생성됩니다 -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 아띠아 다육. All rights reserved.</p>
+            <p class="footer-tagline">
+                <svg class="icon-footer"><use href="#icon-cactus"></use></svg>
+                건강한 다육, 행복한 일상
+                <svg class="icon-footer"><use href="#icon-cactus"></use></svg>
+            </p>
+        </div>
+    </footer>
+
+    <!-- 모바일 네비게이션 버튼 -->
+    <nav class="mobile-nav">
+        <a href="index.html#home" class="nav-button">
+            <svg class="nav-icon"><use href="#icon-home"></use></svg>
+            <span class="nav-label">홈</span>
+        </a>
+        <a href="index.html#about" class="nav-button">
+            <svg class="nav-icon"><use href="#icon-info"></use></svg>
+            <span class="nav-label">소개</span>
+        </a>
+        <a href="gallery.html" class="nav-button active">
+            <svg class="nav-icon"><use href="#icon-gallery"></use></svg>
+            <span class="nav-label">갤러리</span>
+        </a>
+        <a href="index.html#contact" class="nav-button">
+            <svg class="nav-icon"><use href="#icon-phone"></use></svg>
+            <span class="nav-label">연락처</span>
+        </a>
+    </nav>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
+
