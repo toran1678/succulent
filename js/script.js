@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 식물 데이터 (실제로는 서버나 별도 파일에서 가져올 수 있습니다)
 const plantsData = [
-    { id: 1, name: '에케베리아 라울', species: 'Echeveria Laui', price: 15000, image: '/images/image.png', icon: 'leaf' },
+    { id: 1, name: '에케베리아 라울', species: 'Echeveria Laui', price: 15000, image: '../images/image.png', icon: 'leaf' },
     { id: 2, name: '하월시아 쿠페리', species: 'Haworthia cooperi', price: 12000, image: '', icon: 'leaf' },
     { id: 3, name: '세덤 모르가니아눔', species: 'Sedum morganianum', price: 8000, image: '', icon: 'leaf' },
     { id: 4, name: '크라슐라 오바타', species: 'Crassula ovata', price: 10000, image: '', icon: 'leaf' },
