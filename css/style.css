@@ -1083,7 +1083,7 @@ footer p {
     }
     
     .search-input {
-        font-size: 0.95rem;
+        font-size: 1rem; /* 모바일 자동 확대 방지 (최소 16px 필요) */
     }
     
     .filter-container {
