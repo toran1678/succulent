@@ -8,7 +8,7 @@ const plantsData = [
         name: '에케베리아 라울', 
         description: '벨벳처럼 부드러운 분홍빛 잎', 
         price: 15000, 
-        images: ['images/image.png', 'images/image2.png'], // 여러 이미지 추가 가능
+        images: ['images/plants/image.png', 'images/plants/image2.png'], // 여러 이미지 추가 가능
         tags: ['인기', '추천'], 
         stock: 'in-stock' 
     },
