@@ -104,6 +104,12 @@
                         </svg>
                     </button>
                 </div>
+                
+                <!-- 자동완성 드롭다운 -->
+                <div id="autocompleteDropdown" class="autocomplete-dropdown" style="display: none;">
+                    <!-- 자동완성 결과가 여기에 표시됩니다 -->
+                </div>
+                
                 <div class="search-results-info">
                     <span id="resultsCount"></span>
                 </div>
@@ -147,14 +153,92 @@
         </div>
     </section>
 
+    <!-- 식물 상세 모달 -->
+    <div id="plantModal" class="plant-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" aria-label="닫기">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+            
+            <div class="modal-body">
+                <!-- 이미지 슬라이더 -->
+                <div class="modal-image-section">
+                    <div class="image-slider">
+                        <button class="slider-btn prev-btn" aria-label="이전 이미지">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                        </button>
+                        
+                        <div class="slider-container">
+                            <div class="slider-images-wrapper" id="sliderImagesWrapper">
+                                <!-- 이미지들이 동적으로 추가됩니다 -->
+                            </div>
+                            <div class="image-placeholder" id="modalImagePlaceholder">
+                                <svg class="placeholder-icon">
+                                    <use href="#icon-leaf"></use>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <button class="slider-btn next-btn" aria-label="다음 이미지">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div class="image-counter">
+                        <span id="currentImageIndex">1</span> / <span id="totalImages">1</span>
+                    </div>
+                </div>
+                
+                <!-- 상세 정보 -->
+                <div class="modal-info-section">
+                    <div class="modal-header">
+                        <div>
+                            <h2 id="modalPlantName" class="modal-plant-name"></h2>
+                            <p id="modalPlantDescription" class="modal-plant-description"></p>
+                        </div>
+                        <div id="modalTags" class="modal-tags"></div>
+                    </div>
+                    
+                    <div class="modal-details">
+                        <div class="detail-item">
+                            <span class="detail-label">가격</span>
+                            <span id="modalPlantPrice" class="detail-value price"></span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">재고 상태</span>
+                            <span id="modalPlantStock" class="detail-value"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <a href="tel:010-4076-9969" class="modal-btn primary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>
+                            </svg>
+                            구매 문의하기
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 푸터 -->
     <footer>
         <div class="container">
             <p>&copy; 2025 아띠아 다육. All rights reserved.</p>
             <p class="footer-tagline">
-                <svg class="icon-footer"><use href="#icon-cactus"></use></svg>
+                <svg class="icon-footer"><use href="#icon-leaf"></use></svg>
                 건강한 다육, 행복한 일상
-                <svg class="icon-footer"><use href="#icon-cactus"></use></svg>
+                <svg class="icon-footer"><use href="#icon-leaf"></use></svg>
             </p>
         </div>
     </footer>
@@ -179,6 +263,8 @@
         </a>
     </nav>
 
+    <!-- 식물 데이터를 먼저 로드 -->
+    <script src="js/plants-data.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>

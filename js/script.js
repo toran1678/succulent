@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initMobileNavigation();
     initScrollAnimations();
     initActiveNavHighlight();
+    initScrollFadeAnimations(); // 스크롤 애니메이션 추가
     
     // 갤러리 페이지에서만 식물 갤러리 초기화
     if (document.getElementById('plantsGrid')) {
@@ -11,25 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ====== 식물 갤러리 시스템 ======
-
-// 식물 데이터 (실제로는 서버나 별도 파일에서 가져올 수 있습니다)
-const plantsData = [
-    { id: 1, name: '에케베리아 라울', description: '벨벳처럼 부드러운 분홍빛 잎', price: 15000, image: 'images/image.png', icon: 'leaf', tags: ['인기', '추천'] },
-    { id: 2, name: '하월시아 쿠페리', description: '투명한 창문 같은 잎이 매력적', price: 12000, image: '', icon: 'leaf', tags: ['추천'] },
-    { id: 3, name: '세덤 모르가니아눔', description: '늘어지는 줄기가 아름다운 다육이', price: 8000, image: '', icon: 'leaf', tags: [] },
-    { id: 4, name: '크라슐라 오바타', description: '행운을 가져다주는 염전나무', price: 10000, image: '', icon: 'leaf', tags: ['인기'] },
-    { id: 5, name: '알로에 베라', description: '건강에 좋은 다육식물', price: 9000, image: '', icon: 'leaf', tags: [] },
-    { id: 6, name: '그라프토페탈룸', description: '연한 보라빛이 매력적인 다육이', price: 11000, image: '', icon: 'leaf', tags: [] },
-    { id: 7, name: '에케베리아 퍼플딜라이트', description: '진한 보라색 장미 모양 다육이', price: 18000, image: '', icon: 'leaf', tags: ['인기', '추천'] },
-    { id: 8, name: '세덤 루브로틴크툼', description: '젤리빈처럼 통통한 잎', price: 7000, image: '', icon: 'leaf', tags: [] },
-    { id: 9, name: '하월시아 옵투사', description: '물방울 같은 통통한 잎', price: 13000, image: '', icon: 'leaf', tags: ['추천'] },
-    { id: 10, name: '크라슐라 페레그리나', description: '쌓인 동전처럼 독특한 모양', price: 9500, image: '', icon: 'leaf', tags: [] },
-    { id: 11, name: '에케베리아 블랙프린스', description: '검은 장미 같은 고급스러운 다육이', price: 16000, image: '', icon: 'leaf', tags: ['인기'] },
-    { id: 12, name: '세덤 버리토', description: '부리또처럼 통통한 잎이 귀여운', price: 8500, image: '', icon: 'leaf', tags: [] },
-    { id: 13, name: '그라프토베리아', description: '파스텔톤의 로제트형 다육이', price: 14000, image: '', icon: 'leaf', tags: ['추천'] },
-    { id: 14, name: '하월시아 리미폴리아', description: '독특한 무늬가 있는 하월시아', price: 11500, image: '', icon: 'leaf', tags: [] },
-    { id: 15, name: '알로에 노비리스', description: '작고 귀여운 알로에', price: 10500, image: '', icon: 'leaf', tags: [] },
-];
+// 식물 데이터는 js/plants-data.js 파일에서 불러옵니다
 
 // 갤러리 상태 관리
 let galleryState = {
@@ -62,8 +45,6 @@ function initPlantsGallery() {
     const clearButton = document.getElementById('clearSearch');
     
     if (searchInput) {
-        searchInput.addEventListener('input', handleSearch);
-        
         // 실시간 검색을 위한 debounce
         let searchTimeout;
         searchInput.addEventListener('input', function() {
@@ -72,11 +53,28 @@ function initPlantsGallery() {
                 handleSearch();
             }, 300);
         });
+        
+        // 검색창 포커스 시 자동완성 표시
+        searchInput.addEventListener('focus', function() {
+            if (this.value.trim()) {
+                showAutocomplete(this.value.toLowerCase().trim());
+            }
+        });
     }
     
     if (clearButton) {
         clearButton.addEventListener('click', clearSearch);
     }
+    
+    // 자동완성 드롭다운 외부 클릭 시 닫기
+    document.addEventListener('click', function(e) {
+        const dropdown = document.getElementById('autocompleteDropdown');
+        const searchContainer = document.querySelector('.search-container');
+        
+        if (dropdown && searchContainer && !searchContainer.contains(e.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
     
     // 필터 버튼 초기화
     const filterButtons = document.querySelectorAll('.filter-btn');
@@ -125,7 +123,71 @@ function handleSearch() {
         clearButton.style.display = query ? 'flex' : 'none';
     }
     
+    // 자동완성 표시
+    showAutocomplete(query);
+    
     applyFilters();
+}
+
+/**
+ * 자동완성 표시
+ */
+function showAutocomplete(query) {
+    const dropdown = document.getElementById('autocompleteDropdown');
+    
+    if (!query || query.length < 1) {
+        dropdown.style.display = 'none';
+        return;
+    }
+    
+    // 검색어와 일치하는 식물 찾기
+    const matches = galleryState.allPlants.filter(plant => {
+        return plant.name.toLowerCase().includes(query);
+    }).slice(0, 5); // 최대 5개만 표시
+    
+    if (matches.length === 0) {
+        dropdown.style.display = 'none';
+        return;
+    }
+    
+    // 자동완성 결과 생성
+    dropdown.innerHTML = matches.map(plant => {
+        // 검색어 하이라이트
+        const highlightedName = plant.name.replace(
+            new RegExp(`(${query})`, 'gi'),
+            '<span class="autocomplete-highlight">$1</span>'
+        );
+        
+        // 이미지 또는 아이콘 표시
+        const hasImage = plant.images && plant.images.length > 0;
+        const imageHTML = hasImage 
+            ? `<img src="${plant.images[0]}" alt="${plant.name}" class="autocomplete-item-image">`
+            : `<svg class="autocomplete-item-svg"><use href="#icon-leaf"></use></svg>`;
+        
+        return `
+            <div class="autocomplete-item" data-plant-name="${plant.name}">
+                <div class="autocomplete-item-icon ${hasImage ? 'has-image' : ''}">
+                    ${imageHTML}
+                </div>
+                <div class="autocomplete-item-text">
+                    <div class="autocomplete-item-name">${highlightedName}</div>
+                    <div class="autocomplete-item-desc">${plant.description}</div>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    dropdown.style.display = 'block';
+    
+    // 자동완성 항목 클릭 이벤트
+    dropdown.querySelectorAll('.autocomplete-item').forEach(item => {
+        item.addEventListener('click', function() {
+            const plantName = this.getAttribute('data-plant-name');
+            document.getElementById('searchInput').value = plantName;
+            dropdown.style.display = 'none';
+            handleSearch();
+        });
+    });
 }
 
 /**
@@ -168,12 +230,16 @@ function applyFilters() {
 function clearSearch() {
     const searchInput = document.getElementById('searchInput');
     const clearButton = document.getElementById('clearSearch');
+    const dropdown = document.getElementById('autocompleteDropdown');
     
     if (searchInput) {
         searchInput.value = '';
     }
     if (clearButton) {
         clearButton.style.display = 'none';
+    }
+    if (dropdown) {
+        dropdown.style.display = 'none';
     }
     
     galleryState.searchQuery = '';
@@ -246,11 +312,13 @@ function renderPlants() {
  * 식물 카드 HTML 생성
  */
 function createPlantCard(plant) {
-    const imageHTML = plant.image 
-        ? `<img src="${plant.image}" alt="${plant.name}" class="plant-image">`
+    // images 배열 지원 (첫 번째 이미지 또는 플레이스홀더)
+    const firstImage = plant.images && plant.images.length > 0 ? plant.images[0] : '';
+    const imageHTML = firstImage
+        ? `<img src="${firstImage}" alt="${plant.name}" class="plant-image">`
         : `<div class="plant-image-placeholder">
                 <svg class="plant-placeholder-icon">
-                    <use href="#icon-${plant.icon}"></use>
+                    <use href="#icon-leaf"></use>
                 </svg>
            </div>`;
     
@@ -261,11 +329,24 @@ function createPlantCard(plant) {
            </div>`
         : '';
     
+    // 재고 상태 뱃지 HTML 생성
+    const stockLabels = {
+        'in-stock': '판매중',
+        'low-stock': '소량 남음',
+        'out-of-stock': '품절',
+        'coming-soon': '재입고 예정'
+    };
+    
+    const stockHTML = plant.stock
+        ? `<span class="stock-badge ${plant.stock}">${stockLabels[plant.stock] || '판매중'}</span>`
+        : '';
+    
     return `
         <div class="plant-card" data-plant-id="${plant.id}">
             <div class="plant-image-container">
                 ${imageHTML}
                 ${tagsHTML}
+                ${stockHTML}
             </div>
             <div class="plant-info">
                 <h3 class="plant-name">${plant.name}</h3>
@@ -566,6 +647,34 @@ window.addEventListener('load', function() {
 });
 
 /**
+ * 스크롤 페이드인 애니메이션 초기화
+ */
+function initScrollFadeAnimations() {
+    const animateElements = document.querySelectorAll('.scroll-animate');
+    
+    // Intersection Observer 설정
+    const observerOptions = {
+        threshold: 0.15, // 요소의 15%가 보이면 트리거
+        rootMargin: '0px 0px -50px 0px' // 하단에서 50px 전에 트리거
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+                // 한 번 애니메이션되면 관찰 중지 (선택사항)
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+    
+    // 모든 애니메이션 요소 관찰 시작
+    animateElements.forEach(element => {
+        observer.observe(element);
+    });
+}
+
+/**
  * 반응형 네비게이션 바 자동 숨김/표시 개선
  */
 let scrollTimeout;
@@ -580,5 +689,246 @@ window.addEventListener('scroll', function() {
             mobileNav.style.transform = 'translateY(0)';
         }, 150);
     }
+});
+
+// ====== 식물 상세 모달 시스템 ======
+
+let currentPlant = null;
+let currentImageIndex = 0;
+
+/**
+ * 모달 열기
+ */
+function openPlantModal(plantId) {
+    const plant = plantsData.find(p => p.id === plantId);
+    if (!plant) return;
+    
+    currentPlant = plant;
+    currentImageIndex = 0;
+    
+    const modal = document.getElementById('plantModal');
+    
+    // 식물 정보 업데이트
+    document.getElementById('modalPlantName').textContent = plant.name;
+    document.getElementById('modalPlantDescription').textContent = plant.description;
+    document.getElementById('modalPlantPrice').textContent = `${plant.price.toLocaleString()}원`;
+    
+    // 재고 상태 표시
+    const stockLabels = {
+        'in-stock': '판매중',
+        'low-stock': '소량 남음',
+        'out-of-stock': '품절',
+        'coming-soon': '재입고 예정'
+    };
+    document.getElementById('modalPlantStock').textContent = stockLabels[plant.stock] || '판매중';
+    
+    // 태그 표시
+    const modalTags = document.getElementById('modalTags');
+    if (plant.tags && plant.tags.length > 0) {
+        modalTags.innerHTML = plant.tags.map(tag => `<span class="modal-tag">${tag}</span>`).join('');
+    } else {
+        modalTags.innerHTML = '';
+    }
+    
+    // 이미지 슬라이더 초기화
+    initImageSlider();
+    
+    // 이미지 업데이트
+    updateModalImage();
+    
+    // 모달 표시
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden'; // 스크롤 방지
+    
+    // 모바일 네비게이션과 하단 여백 제거
+    const mobileNav = document.querySelector('.mobile-nav');
+    if (mobileNav) {
+        mobileNav.style.display = 'none';
+    }
+    document.body.style.paddingBottom = '0';
+}
+
+/**
+ * 모달 닫기
+ */
+function closePlantModal() {
+    const modal = document.getElementById('plantModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = ''; // 스크롤 복원
+    
+    // 모바일 네비게이션과 하단 여백 복원
+    const mobileNav = document.querySelector('.mobile-nav');
+    if (mobileNav) {
+        mobileNav.style.display = '';
+    }
+    document.body.style.paddingBottom = '';
+    
+    currentPlant = null;
+    currentImageIndex = 0;
+}
+
+/**
+ * 이미지 슬라이더 초기화
+ */
+function initImageSlider() {
+    if (!currentPlant) return;
+    
+    const wrapper = document.getElementById('sliderImagesWrapper');
+    const modalImagePlaceholder = document.getElementById('modalImagePlaceholder');
+    const images = currentPlant.images || [];
+    
+    // 기존 이미지 제거
+    wrapper.innerHTML = '';
+    
+    // 이미지 생성
+    if (images.length > 0) {
+        modalImagePlaceholder.style.display = 'none';
+        images.forEach((imgSrc, index) => {
+            const img = document.createElement('img');
+            img.src = imgSrc;
+            img.alt = currentPlant.name;
+            img.className = 'modal-plant-image';
+            if (index === 0) {
+                img.classList.add('active');
+            }
+            wrapper.appendChild(img);
+        });
+    } else {
+        // 이미지가 없으면 플레이스홀더 표시
+        modalImagePlaceholder.style.display = 'flex';
+    }
+}
+
+/**
+ * 모달 이미지 업데이트
+ */
+function updateModalImage() {
+    if (!currentPlant) return;
+    
+    const modalImagePlaceholder = document.getElementById('modalImagePlaceholder');
+    const images = currentPlant.images || [];
+    const allImages = document.querySelectorAll('.modal-plant-image');
+    const imageCounter = document.querySelector('.image-counter');
+    const sliderButtons = document.querySelectorAll('.slider-btn');
+    
+    // 이미지가 있는 경우
+    if (images.length > 0) {
+        modalImagePlaceholder.style.display = 'none';
+        
+        // 이미지 카운터와 슬라이더 버튼 표시
+        if (imageCounter) imageCounter.style.display = 'block';
+        sliderButtons.forEach(btn => btn.style.display = 'flex');
+        
+        // 모든 이미지의 클래스 제거
+        allImages.forEach((img, index) => {
+            img.classList.remove('active', 'prev');
+            
+            if (index === currentImageIndex) {
+                img.classList.add('active');
+            } else if (index < currentImageIndex) {
+                img.classList.add('prev');
+            }
+        });
+        
+        // 이미지 카운터 업데이트
+        document.getElementById('currentImageIndex').textContent = currentImageIndex + 1;
+        document.getElementById('totalImages').textContent = images.length;
+    } else {
+        // 플레이스홀더 표시
+        modalImagePlaceholder.style.display = 'flex';
+        
+        // 이미지 카운터와 슬라이더 버튼 숨김
+        if (imageCounter) imageCounter.style.display = 'none';
+        sliderButtons.forEach(btn => btn.style.display = 'none');
+    }
+    
+    // 슬라이더 버튼 상태 업데이트
+    updateSliderButtons();
+}
+
+/**
+ * 슬라이더 버튼 상태 업데이트
+ */
+function updateSliderButtons() {
+    const images = currentPlant.images || [];
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    
+    // 이미지가 1개 이하면 버튼 비활성화
+    if (images.length <= 1) {
+        prevBtn.disabled = true;
+        nextBtn.disabled = true;
+        return;
+    }
+    
+    // 첫 번째 이미지에서 이전 버튼 비활성화
+    prevBtn.disabled = currentImageIndex === 0;
+    
+    // 마지막 이미지에서 다음 버튼 비활성화
+    nextBtn.disabled = currentImageIndex === images.length - 1;
+}
+
+/**
+ * 이전 이미지로 이동
+ */
+function prevImage() {
+    if (!currentPlant || currentImageIndex === 0) return;
+    currentImageIndex--;
+    updateModalImage();
+}
+
+/**
+ * 다음 이미지로 이동
+ */
+function nextImage() {
+    const images = currentPlant.images || [];
+    if (!currentPlant || currentImageIndex === images.length - 1) return;
+    currentImageIndex++;
+    updateModalImage();
+}
+
+/**
+ * 모달 이벤트 리스너 설정
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    // 모달 닫기 버튼
+    const modalClose = document.querySelector('.modal-close');
+    if (modalClose) {
+        modalClose.addEventListener('click', closePlantModal);
+    }
+    
+    // 오버레이 클릭 시 닫기
+    const modalOverlay = document.querySelector('.modal-overlay');
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', closePlantModal);
+    }
+    
+    // ESC 키로 닫기
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closePlantModal();
+        }
+    });
+    
+    // 슬라이더 버튼
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    
+    if (prevBtn) {
+        prevBtn.addEventListener('click', prevImage);
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', nextImage);
+    }
+    
+    // 카드 클릭 이벤트 위임
+    document.addEventListener('click', function(e) {
+        const card = e.target.closest('.plant-card');
+        if (card) {
+            const plantId = parseInt(card.getAttribute('data-plant-id'));
+            openPlantModal(plantId);
+        }
+    });
 });
 
