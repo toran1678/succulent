@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# 사이트맵 위치
+Sitemap: https://toran1678.github.io/succulent/sitemap.xml
+
+# Favicon 허용
+Allow: /favicon.ico
+Allow: /images/favicon-*.png
+Allow: /images/apple-touch-icon.png
+
