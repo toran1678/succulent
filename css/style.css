@@ -606,12 +606,12 @@ svg.icon-note {
 /* 식물 카드 그리드 */
 .plants-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(3, 1fr); /* 데스크탑: 3열 고정 (3x3=9개) */
     gap: 25px;
     margin-bottom: 40px;
 }
 
-/* 모바일에서 2열 고정 */
+/* 모바일에서 2열 고정 (2x5=10개) */
 @media (max-width: 768px) {
     .plants-grid {
         grid-template-columns: repeat(2, 1fr);
